@@ -43,7 +43,7 @@ def plot_value_function(V, title="Value Function"):
     Z_ace = np.apply_along_axis(lambda _: V[(_[0], _[1], True)], 2, np.dstack([X, Y]))
 
     def plot_surface(X, Y, Z, title):
-        fig = plt.figure(figsize=(20, 10))
+        fig = plt.figure(figsize=(8, 6))
         ax = fig.add_subplot(111, projection='3d')
         surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
                                cmap=matplotlib.cm.coolwarm, vmin=-1.0, vmax=1.0)
@@ -51,13 +51,15 @@ def plot_value_function(V, title="Value Function"):
         ax.set_ylabel('Dealer Showing')
         ax.set_zlabel('Value')
         ax.set_title(title)
-        ax.view_init(ax.elev, -120)
-        fig.colorbar(surf)
+        ax.view_init(ax.elev - 13, -120)
+        ax.set_position([0.05, 0.05, 0.825, 0.9])  # [left, bottom, width, height]
+        ax.set_box_aspect([1.2, 0.95, 1])
+        cbar_ax = fig.add_axes([0.85, 0.1, 0.025, 0.8])  # Space for colorbar
+        fig.colorbar(surf, cax=cbar_ax, pad=0.01)
         plt.show()
 
     plot_surface(X, Y, Z_noace, "{} (No Usable Ace)".format(title))
     plot_surface(X, Y, Z_ace, "{} (Usable Ace)".format(title))
-
 
 
 def plot_episode_stats(stats, smoothing_window=10, noshow=False):
